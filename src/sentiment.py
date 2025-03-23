@@ -1,5 +1,5 @@
-from constants import text_classification,text_classification_model
-from ..utils import build_model_from_transformers
+from constants import text_classification,text_classification_model,sentiment_model
+from utils import build_model_from_transformers
 import pandas as pd
 
 class Sentiment:
@@ -8,16 +8,15 @@ class Sentiment:
 
     def get_sentiments(self):
         try:
-           sent_pipe = build_model_from_transformers(text_classification_model,text_classification)
-           for summ in summaries:
+           sent_pipe = build_model_from_transformers(text_classification_model,text_classification,sentiment_model)
+           for summ in self.summaries:
                return [sent_pipe(summ)[0]['label'] for summ in self.summaries]
         except Exception as e:
             raise RuntimeError(f"Error in sentiment analysis: {str(e)}") from e
 
-    def generate_sentiment_distribution(self):
+    def generate_sentiment_distribution(self,sentiments):
         sent_dis = {}
         try:
-            sentiments = self.get_sentiments()
             
             df = pd.DataFrame(sentiments,columns=['Label'])
             res = df['Label'].value_counts()

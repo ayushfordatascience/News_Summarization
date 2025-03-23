@@ -8,6 +8,8 @@ gtts
 numpy
 pandas
 
+sentence_transformers
+
 duckduckgo_search
 bs4
 

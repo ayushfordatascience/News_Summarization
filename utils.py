@@ -21,12 +21,13 @@ def get_response(news_links):
             responses.append(f"Request Exception: {str(e)}")
   return responses 
 
-def build_model_from_transformers(model_name,category):
+def build_model_from_transformers(model_name,category,save_model_as):
      try:
         model_id=model_name
         tokenizer = AutoTokenizer.from_pretrained(model_id)
         model = AutoModelForSequenceClassification.from_pretrained(model_id)
         pipe = pipeline(category, model=model, tokenizer=tokenizer)
+        pipe.save_pretrained(f'./model/{save_model_as}')
      except Exception as e:
           raise e
      return pipe         

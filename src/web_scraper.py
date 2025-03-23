@@ -1,18 +1,13 @@
-from ..utils import get_response
+from constants import site_link
+from utils import get_response
 
 from duckduckgo_search import DDGS
 from bs4 import BeautifulSoup
-
-import os
-from dotenv import load_dotenv
 
 
 class WebScraper:
     def __init__(self,company):
         self.company = company
-        load_dotenv()
-        self.site = os.getenv("SITE_LINK")
-        self.news_links = self.get_news_links()
 
     def get_news_links(self):
         try:
@@ -20,7 +15,7 @@ class WebScraper:
                 raise ValueError("Company name cannot be empty")
             
             search = DDGS()
-            query = f"Top news for {self.company} Company site:{self.site}"
+            query = f"Top news for {self.company} Company site:{site_link}"
             
             news = search.news(query,max_results=10)
             
@@ -31,13 +26,13 @@ class WebScraper:
         except Exception as e:
             raise RuntimeError(f"Error fetching news links for {self.company}: {e}")           
             
-    def get_headings(self):
+    def get_headings(self,news_links):
         script_tags = ["script", "noscript", "style"]
         headings=[]
         try:
-            responses = get_response(self.news_links)
+            responses = get_response(news_links)
             for res in responses:
-                soup = BeautifulSoup(res)
+                soup = BeautifulSoup(res,features='lxml')
 
                 for script in soup(script_tags):
                     script.decompose()
@@ -52,13 +47,13 @@ class WebScraper:
         
         return headings
     
-    def get_summary(self):
+    def get_summary(self,news_links):
         script_tags = ["script", "noscript", "style"]
         summaries=[]
         try:
             responses = get_response(news_links)
             for res in responses:
-                soup = BeautifulSoup(res)
+                soup = BeautifulSoup(res,features='lxml')
                 
                 for script in soup(script_tags):
                     script.decompose()
@@ -77,7 +72,7 @@ class WebScraper:
                     else:
                         break
                     
-                summaries.append(h2_after_h1 if h2_after_h1 else ["No Content Found"])
+                summaries.append(h2_after_h1[0] if h2_after_h1 else "No Content Found")
         except Exception as e: 
             raise RuntimeError(f"Error extracting summaries: {e}")           
         return summaries
