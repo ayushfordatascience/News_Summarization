@@ -1,8 +1,6 @@
 import requests
-
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
 
-from langchain_huggingface import HuggingFaceEndpoint
 
 def get_response(news_links):
   responses = []
@@ -29,15 +27,8 @@ def build_model_from_transformers(model_name,category,save_model_as):
         tokenizer = AutoTokenizer.from_pretrained(model_id)
         model = AutoModelForSequenceClassification.from_pretrained(model_id)
         pipe = pipeline(category, model=model, tokenizer=tokenizer)
-        pipe.save_pretrained(f'./model/{save_model_as}')
      except Exception as e:
           raise e
      return pipe    
 
 
-def create_llm_model():
-  try:
-    llm = HuggingFaceEndpoint(llm_model)
-    return llm
-  except Exception as e:
-        raise e     

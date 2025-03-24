@@ -6,4 +6,4 @@ text_classification = "text-classification"
 
 topic_model = "all-MiniLM-L6-v2"
 
-llm_model = "google/flan-t5-small"
+llm_model = "tiiuae/falcon-7b-instruct"
