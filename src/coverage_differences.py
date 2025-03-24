@@ -1,6 +1,6 @@
 from langchain.prompts import PromptTemplate # Import LLMChain correctly
-from langchain_huggingface import HuggingFaceEndpoint
-from constants import llm_model
+from langchain_openai import ChatOpenAI
+from constants import openai_model
 from itertools import combinations
 
 
@@ -8,13 +8,14 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-hf_token = os.getenv("HF_TOKEN")
+openai_api_key = os.getenv("OPENAI_API_KEY")
 
 
 
 class CoverageDifference:
     def __init__(self):
         self.llm = self.create_llm_model()
+
         if self.llm is None:
             raise ValueError("LLM model could not be initialized. Check your API token or model access.")
 
@@ -25,21 +26,16 @@ class CoverageDifference:
         self.impact_chain = self.create_chain(self.impact_prompt)
 
     def create_llm_model(self):
-
-        try:
-            llm = HuggingFaceEndpoint(
-                repo_id=llm_model,
-                huggingfacehub_api_token=hf_token,
-                max_new_tokens=250,
-                temperature=0.7
-            )
-
-            if llm is None:
-                raise ValueError("HuggingFaceEndpoint returned None. Check your API token or model access.")
-            return llm
-        except Exception as e:
-            raise RuntimeError(f"Error initializing LLM model '{llm_model}': {e}")
-
+            try:
+                llm = ChatOpenAI(
+                  model=openai_model,  
+                    openai_api_key=openai_api_key,
+                    temperature=0.7
+                 )
+                return llm
+            except Exception as e:
+                raise RuntimeError(f"Error initializing OpenAI model: {e}")
+            
     def create_comparison_prompt(self):
         return PromptTemplate(
             input_variables=["article1", "article2"],

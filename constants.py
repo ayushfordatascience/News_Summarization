@@ -6,4 +6,6 @@ text_classification = "text-classification"
 
 topic_model = "all-MiniLM-L6-v2"
 
-llm_model = "tiiuae/falcon-7b-instruct"
+openai_model ="gpt-3.5-turbo"
+
+translation_model = "Helsinki-NLP/opus-mt-en-hi"
