@@ -102,7 +102,7 @@ else:
 
             with st.spinner("Getting the data for you.."):
                 response = requests.get(
-                f"{endpoint}/process")
+                f"{endpoint}/data")
             if response.status_code == 200:
                 st.write(response.json())
             else:
