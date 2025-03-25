@@ -88,12 +88,12 @@ else:
          
             if st.button("Send Data to API"):
                 response = requests.post(
-                    f"{endpoint}/receive_data",  # FastAPI endpoint
-                    json=final_dict  # Send dictionary as JSON
+                    f"{endpoint}/receive_data",  
+                    json=final_dict  
                 )
 
                 if response.status_code == 200:
-                    st.success("Data sent successfully!")  # Display API response
+                    st.success("Data sent successfully!")  
                 else:
                     st.error(f"Error: {response.status_code} - {response.text}") 
   
@@ -101,11 +101,8 @@ else:
         
 
             with st.spinner("Getting the data for you.."):
-                response = requests.post(
-                f"{endpoint}/process",  # Call the FastAPI endpoint
-                    json={"input": company},
-                    headers=headers
-                )
+                response = requests.get(
+                f"{endpoint}/process")
             if response.status_code == 200:
                 st.write(response.json())
             else:
