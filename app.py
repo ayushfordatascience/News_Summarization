@@ -15,10 +15,13 @@ st.title('Business News Summarization App')
 
 api_key = st.text_input("Enter your OpenAI API Key:", type="password")
 
-if not api_key:
-    st.warning("Please enter your OpenAI API key to proceed.")
-else:
+
+if "api_key" in st.session_state and st.button("Send"):
+    headers = {"Authorization": f"Bearer {st.session_state['api_key']}"}
+    st.session_state['api_key']=api_key
     company = st.text_input('Enter the name of the company:')
+else:
+    st.warning("Please enter your OpenAI API key to proceed.")
 
 if st.button('Get Details of the company'):
     with st.spinner(f"Getting insights for {company} Company"):
@@ -89,13 +92,15 @@ if st.button('Get Details of the company'):
         
 
     with st.spinner("Getting the data for you.."):
-
-        response = requests.get(endpoint)
-        if response.status_code == 200:   
-             st.session_state["news_data"] = response.json()
-             st.success("News data retrieved successfully!")
+        response = requests.post(
+        f"{backend_url}/process",  # Call the FastAPI endpoint
+        json={"input": company},
+        headers=headers
+        )
+        if response.status_code == 200:
+            st.write(response.json())
         else:
-            st.error("Failed to retrieve news. Please try again.")
+            st.error(f"Error: {response.status_code} - {response.text}")
 
 
         data = st.session_state['news_data']
@@ -224,6 +229,12 @@ if st.button('Get Details of the company'):
         st.markdown("#### Play it in Hindi")
         st.audio(audio_url, format="audio/mp3")
     st.write("Created the end UI")
+
+    
+if st.button("Clear API Key"):
+    if "api_key" in st.session_state:
+        del st.session_state["api_key"]
+
 
 st.html("""
 <div class="footer">
