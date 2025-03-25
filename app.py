@@ -56,7 +56,7 @@ if st.button('Get Details of the company'):
         for a in range(len(summaries)):
             articles_for_exp.append({"Title":title[a],"Summary":summaries[a]})
 
-        coverage_differences = CoverageDifference()
+        coverage_differences = CoverageDifference(api_key)
         coverages = coverage_differences.create_coverage_differences(articles_for_exp)
         coverage_list = []
         for i in range(len(coverages)): 
@@ -76,7 +76,7 @@ if st.button('Get Details of the company'):
             final_dict["Comparitive Sentiment Score"]['Topic Overlap'][f'Unique Topic in Article {c+1}'] = topics_list[t]
 
 
-        final_sentiment = FinalSentiment()
+        final_sentiment = FinalSentiment(api_key)
         verdict = final_sentiment.generate_final_sentiment(articles_for_exp)
 
         audio = GenerateAudio()

@@ -2,17 +2,10 @@ from langchain.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 from constants import openai_model
 
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-openai_api_key = os.getenv("OPENAI_API_KEY")
-
-if openai_api_key is None:
-    raise ValueError("OPENAI_API_KEY is not set. Please check your environment variables.")
 
 class FinalSentiment:
-    def __init__(self):
+    def __init__(self,api_key):
+        self.api_key=api_key
         self.llm = self.create_llm_model()
         self.sentiment_prompt = self.create_sentiment_prompt()
         self.sentiment_chain = self.create_sentiment_chain()
@@ -21,7 +14,7 @@ class FinalSentiment:
         try:
             return ChatOpenAI(
                 model=openai_model,  
-                openai_api_key=openai_api_key,
+                openai_api_key=api_key,
                 temperature=0.7
             )
         except Exception as e:

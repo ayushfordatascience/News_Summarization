@@ -3,18 +3,10 @@ from langchain_openai import ChatOpenAI
 from constants import openai_model
 from itertools import combinations
 
-
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-openai_api_key = os.getenv("OPENAI_API_KEY")
-
-
-
 class CoverageDifference:
-    def __init__(self):
-        self.llm = self.create_llm_model()
+    def __init__(self,api_key):
+        self.api_key = api_key
+        self.llm = self.create_llm_model(self.api_key)
 
         if self.llm is None:
             raise ValueError("LLM model could not be initialized. Check your API token or model access.")
@@ -25,11 +17,11 @@ class CoverageDifference:
         self.comparison_chain = self.create_chain(self.comparison_prompt)
         self.impact_chain = self.create_chain(self.impact_prompt)
 
-    def create_llm_model(self):
+    def create_llm_model(self,api_key):
             try:
                 llm = ChatOpenAI(
                   model=openai_model,  
-                    openai_api_key=openai_api_key,
+                    openai_api_key=api_key,
                     temperature=0.7
                  )
                 return llm
