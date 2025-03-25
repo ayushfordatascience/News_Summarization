@@ -1,6 +1,6 @@
 site_link = "https://www.moneycontrol.com/"
 
-endpoint = "http://http://localhost:8080/data"
+endpoint = "http://localhost:8005/data"
 
 sentiment_model="sentiment-analysis"
 text_classification_model = "mrm8488/distilroberta-finetuned-financial-news-sentiment-analysis"
