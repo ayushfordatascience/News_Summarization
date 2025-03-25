@@ -104,7 +104,7 @@ else:
                 response = requests.get(
                 f"{endpoint}/data")
             if response.status_code == 200:
-                st.write(response.json())
+                st.session_dtate['news_data'] = response.json()
             else:
                 st.error(f"Error: {response.status_code} - {response.text}")
 
