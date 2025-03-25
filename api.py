@@ -4,7 +4,7 @@ import json
 application = FastAPI()
 
 @application.post("/receive_data")
-async def receive_data(data: final_dict):
+async def receive_data(data):
     return {"message": "Data received successfully!", "received_data": data.dict()}
 
 
