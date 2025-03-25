@@ -15,10 +15,9 @@ st.title('Business News Summarization App')
 
 api_key = st.text_input("Enter your OpenAI API Key:", type="password")
 
-
-if "api_key" in st.session_state and st.button("Send"):
-    headers = {"Authorization": f"Bearer {st.session_state['api_key']}"}
+if api_key and st.button("Send"):
     st.session_state['api_key']=api_key
+    headers = {"Authorization": f"Bearer {st.session_state['api_key']}"}
     company = st.text_input('Enter the name of the company:')
 else:
     st.warning("Please enter your OpenAI API key to proceed.")
@@ -84,9 +83,17 @@ if st.button('Get Details of the company'):
 
         final_dict['Final Sentiment Analysis'] = verdict.content
         final_dict['Audio']=str(audio)
+         
+        if st.button("Send Data to API"):
+            response = requests.post(
+                f"{endpint}/receive_data",  # FastAPI endpoint
+                json=final_dict  # Send dictionary as JSON
+            )
 
-        with open("data.json", "w") as json_file:
-            json.dump(final_dict, json_file, indent=4)
+            if response.status_code == 200:
+                st.success("Data sent successfully!")  # Display API response
+            else:
+                st.error(f"Error: {response.status_code} - {response.text}") 
   
     st.write("Generated Insights Successfully!!")
         

@@ -3,9 +3,10 @@ import json
 
 application = FastAPI()
 
-# Load JSON data
-with open("data.json", "r") as file:
-    data = json.load(file)
+@application.post("/receive_data")
+async def receive_data(data: final_dict):
+    return {"message": "Data received successfully!", "received_data": data.dict()}
+
 
 @application.get("/")
 def read_root():
