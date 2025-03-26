@@ -1,11 +1,11 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List, Dict
-import json
+
 
 application = FastAPI()
 
-
+stored_data=[]
 class ArticleModel(BaseModel):
     Title: str
     Summary: str
@@ -19,11 +19,16 @@ class CoverageDifferenceModel(BaseModel):
 class SentimentDistributionModel(BaseModel):
     Positive: int
     Neutral: int
-
-class TopicOverlapModel(BaseModel):
+    Negative: int
+class TopicOverlap(BaseModel):
     Common_Topics: List[str]
-    Unique_Topics_in_Article_1: List[str]
-    Unique_Topics_in_Article_2: List[str]
+    Unique_Topics: Dict[str, List[str]]  # Dynamic keys: "Unique Topics in Article X"
+    
+    def serialize(self):
+        return {
+            "Common Topics": self.Common_Topics,
+            **{f"Unique Topics in Article {i+1}": topics for i, (key, topics) in enumerate(self.Unique_Topics.items())}
+        }
 
 class ComparativeSentimentScoreModel(BaseModel):
     Sentiment_Distribution: SentimentDistributionModel
