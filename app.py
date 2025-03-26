@@ -6,6 +6,7 @@ from src.final_sentiment import FinalSentiment
 from src.generate_audio import GenerateAudio
 
 from constants import endpoint
+import json
 
 import requests
 import streamlit as st
@@ -86,15 +87,14 @@ else:
             final_dict['Final_Sentiment_Analysis'] = verdict.content
             final_dict['Audio']=str(audio)
          
-            if st.button("Send Data to API"):
-                response = requests.post(
+            response = requests.post(
                     f"{endpoint}/receive_data",  
                     json=final_dict  
-                )
+            )
 
-                if response.status_code == 200:
+            if response.status_code == 200:
                     st.success("Data sent successfully!")  
-                else:
+            else:
                     st.error(f"Error: {response.status_code} - {response.text}") 
   
         st.write("Generated Insights Successfully!!")
@@ -104,17 +104,18 @@ else:
                 response = requests.get(
                 f"{endpoint}/data")
                 if response.status_code == 200:
-                    st.session_state['news_data'] = response.json()
+                    st.session_state['news_data'] = json.loads(response.json()["stored_data"][0])
                 else:
                     st.error(f"Error: {response.status_code} - {response.text}")
-                    st.session_state['news_data'] = {}
+                    st.session_state['news_data'] = []
 
-                data = st.session_state['news_data']['stored_data']
+                data = st.session_state['news_data']
+
 
                 sentiment_distribution = data['Comparative_Sentiment_Score']['Sentiment_Distribution']
-                positive_count = sentiment_distribution.get("Positive", 0)
-                neutral_count = sentiment_distribution.get("Neutral", 0)
-                negative_count = sentiment_distribution.get("Negative", 0)
+                positive_count = sentiment_distribution.get("positive", 0)
+                neutral_count = sentiment_distribution.get("neutral", 0)
+                negative_count = sentiment_distribution.get("negative", 0)
 
                 st.markdown(f"**Sentiment Distribution:** Positive: {positive_count} | Neutral: {neutral_count} | Negative: {negative_count}")
                 st.markdown("""
