@@ -39,15 +39,10 @@ class DataModel(BaseModel):
 
 stored_data: List[DataModel] = []
 
-def save_data():
-    with open("data.json", "w") as file:
-        json.dump([item.model_dump() for item in stored_data], file, indent=4)
-    print("Data saved successfully!")
 
 @application.post("/receive_data")
 async def receive_data(data: DataModel):
     stored_data.append(data)
-    save_data()
     return {"message": "Data received successfully!", "received_data": data.dict()}
 
 @application.get("/")
