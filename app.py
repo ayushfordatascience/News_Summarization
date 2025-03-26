@@ -68,13 +68,13 @@ else:
                 "Sentiment Distribution":sentiment_distribution,
                 "Coverage Differences":coverage_list,
                 "Topic Overlap":{
-                "Common Topic":common_topics,
+                "Common Topics":common_topics,
                  }
             }
 
             for t in range(len(topics_list)):
                 c=t
-                final_dict["Comparitive Sentiment Score"]['Topic Overlap'][f'Unique Topic in Article {c+1}'] = topics_list[t]
+                final_dict["Comparative Sentiment Score"]['Topic Overlap'][f'Unique Topic in Article {c+1}'] = topics_list[t]
 
 
             final_sentiment = FinalSentiment(api_key)
