@@ -111,7 +111,7 @@ else:
 
                 data = st.session_state['news_data']['stored_data']
 
-                sentiment_distribution = data['Comparative_Sentiment_Score']['Sentiment_Distribution']
+                sentiment_distribution = data['Comparative Sentiment Score']['Sentiment Distribution']
                 positive_count = sentiment_distribution.get("Positive", 0)
                 neutral_count = sentiment_distribution.get("Neutral", 0)
                 negative_count = sentiment_distribution.get("Negative", 0)
@@ -195,7 +195,7 @@ else:
                     }
                     </style>      
                 <div class="scroll-container">""", unsafe_allow_html=True)
-                coverage = data["Comparative_Sentiment_Score"]["Coverage_Differences"][:6]
+                coverage = data["Comparative Sentiment Score"]["Coverage Differences"][:6]
                 for i in range(len(coverage)):
                     st.markdown(f"""
                         <div class="coverage-box">
@@ -225,7 +225,7 @@ else:
                 """, unsafe_allow_html=True)
 
 
-                final_sentiment = data['Final_Sentiment_Analysis']
+                final_sentiment = data['Final Sentiment Analysis']
                 st.markdown(f'<div class="verdict-box"><p>{final_sentiment}</p></div>', unsafe_allow_html=True)
 
 
