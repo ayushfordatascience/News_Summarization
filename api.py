@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
 from typing import List, Dict
 
 
@@ -22,7 +22,7 @@ class SentimentDistributionModel(BaseModel):
     Negative: int
 class TopicOverlapModel(BaseModel):
     Common_Topics: List[str]
-    Unique_Topics: Dict[str, List[str]] 
+    Unique_Topics: Dict[str, List[str]] = Field(default_factory=dict) 
      # Dynamic keys: "Unique Topics in Article X"
     model_config = {"extra": "allow"}
 
