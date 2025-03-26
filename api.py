@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List, Dict
 
-app = FastAPI()
+application = FastAPI()
 
 # Define Pydantic models
 class ArticleModel(BaseModel):
@@ -39,15 +39,15 @@ class DataModel(BaseModel):
 # In-memory storage for received data
 stored_data: List[DataModel] = []
 
-@app.post("/receive_data")
+@application.post("/receive_data")
 async def receive_data(data: DataModel):
     stored_data.append(data)
     return {"message": "Data received successfully!", "received_data": data.dict()}
 
-@app.get("/")
+@application.get("/")
 def read_root():
     return {"message": "Welcome to the API"}
 
-@app.get("/data")
+@application.get("/data")
 def get_data():
     return {"stored_data": [item.dict() for item in stored_data]}
