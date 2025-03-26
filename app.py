@@ -144,20 +144,15 @@ else:
                     .sentiment-circle {
                         width: 15px;
                         height: 15px;
+                        color:#000;    
                         border-radius: 50%;
-                        margin-left: 10px;
                     }
                 </style>""",unsafe_allow_html=True)      
-                sentiment_colors = {
-                    "Positive": "#28a745",
-                    "Neutral": "#ffbf00",
-                    "Negative": "#dc3545"
-                }
+
                 st.markdown(f"#### Articles from {company}")
                 st.markdown("""<div class="scroll-container">""", unsafe_allow_html=True)
                 article = data["Articles"]
                 for i in range(len(article)):
-                    sentiment_color = sentiment_colors.get(article[i]["Sentiment"], "gray")
                     st.markdown(f"""
                         <div class="article-box">
                             <div class="article-content">
@@ -165,7 +160,7 @@ else:
                                 <p>{article[i]["Summary"]}</p>
                                 <p><i>Topics: {", ".join(article[i]["Topics"])}</i></p>
                             </div>
-                        <div class="sentiment-circle" style="background-color: {sentiment_color};"></div>
+                        <div class="sentiment-circle">{article[i]['Sentiment']}</div>
                         </div>
                     """, unsafe_allow_html=True)
                 st.markdown("</div>", unsafe_allow_html=True)
