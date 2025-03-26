@@ -6,7 +6,7 @@ from itertools import combinations
 class CoverageDifference:
     def __init__(self,api_key):
         self.api_key = api_key
-        self.llm = self.create_llm_model(self.api_key)
+        self.llm = self.create_llm_model()
 
         if self.llm is None:
             raise ValueError("LLM model could not be initialized. Check your API token or model access.")
@@ -17,11 +17,11 @@ class CoverageDifference:
         self.comparison_chain = self.create_chain(self.comparison_prompt)
         self.impact_chain = self.create_chain(self.impact_prompt)
 
-    def create_llm_model(self,api_key):
+    def create_llm_model(self):
             try:
                 llm = ChatOpenAI(
                   model=openai_model,  
-                    openai_api_key=api_key,
+                    openai_api_key=self.api_key,
                     temperature=0.7
                  )
                 return llm

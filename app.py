@@ -97,143 +97,143 @@ else:
                 else:
                     st.error(f"Error: {response.status_code} - {response.text}") 
   
-            st.write("Generated Insights Successfully!!")
+        st.write("Generated Insights Successfully!!")
         
 
-            with st.spinner("Getting the data for you.."):
+        with st.spinner("Getting the data for you.."):
                 response = requests.get(
                 f"{endpoint}/data")
-            if response.status_code == 200:
-                st.session_dtate['news_data'] = response.json()
-            else:
-                st.error(f"Error: {response.status_code} - {response.text}")
+                if response.status_code == 200:
+                    st.session_state['news_data'] = response.json()
+                else:
+                    st.error(f"Error: {response.status_code} - {response.text}")
+                    st.session_state['news_data'] = {}
 
+                data = st.session_state['news_data']
+                print(data)
 
-            data = st.session_state['news_data']
+                sentiment_distribution = data['Comparitive Sentiment Score']['Sentiment Distribution']
+                positive_count = sentiment_distribution.get("positive", 0)
+                neutral_count = sentiment_distribution.get("neutral", 0)
+                negative_count = sentiment_distribution.get("negative", 0)
 
-            sentiment_distribution = data['Comparitive Sentiment Score']['Sentiment Distribution']
-            positive_count = sentiment_distribution.get("positive", 0)
-            neutral_count = sentiment_distribution.get("neutral", 0)
-            negative_count = sentiment_distribution.get("negative", 0)
-
-            st.markdown(f"**Sentiment Distribution:** Positive: {positive_count} | Neutral: {neutral_count} | Negative: {negative_count}")
-
-            st.markdown("""
-            <style>
-                .scroll-container {
-                max-height: 40px;
-                overflow-y: auto;
-                border: 1px solid #ccc;
-                padding-right: 10px;
-                border-radius: 10px;
-                }
-                .article-box {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    background-color: #f9f9f9;
-                    padding: 15px;
-                    margin-bottom: 10px;
-                    border-radius: 10px;
-                    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-                }
-                .article-content {
-                    flex: 1;
-                    color: #000;     
-                }
-                .sentiment-circle {
-                    width: 15px;
-                    height: 15px;
-                    border-radius: 50%;
-                    margin-left: 10px;
-                }
-            </style>""",unsafe_allow_html=True)      
-            sentiment_colors = {
-                "Positive": "#28a745",
-                "Neutral": "#ffbf00",
-                "Negative": "#dc3545"
-            }
-            st.markdown(f"#### Articles from {company}")
-            st.markdown("""<div class="scroll-container">""", unsafe_allow_html=True)
-            article = data["Articles"]
-            for i in range(len(article)):
-                sentiment_color = sentiment_colors.get(article[i]["Sentiment"], "gray")
-                st.markdown(f"""
-                    <div class="article-box">
-                        <div class="article-content">
-                            <h4><b>{article[i]["Title"]}</b></h4>
-                            <p>{article[i]["Summary"]}</p>
-                            <p><i>Topics: {", ".join(article[i]["Topics"])}</i></p>
-                        </div>
-                    <div class="sentiment-circle" style="background-color: {sentiment_color};"></div>
-                    </div>
-                """, unsafe_allow_html=True)
-            st.markdown("</div>", unsafe_allow_html=True)
-
-            st.markdown("#### Coverage Differences")
-            st.markdown("""
+                st.markdown(f"**Sentiment Distribution:** Positive: {positive_count} | Neutral: {neutral_count} | Negative: {negative_count}")
+                st.markdown("""
                 <style>
-                .scroll-container {
+                    .scroll-container {
                     max-height: 40px;
                     overflow-y: auto;
                     border: 1px solid #ccc;
                     padding-right: 10px;
                     border-radius: 10px;
+                    }
+                    .article-box {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        background-color: #f9f9f9;
+                        padding: 15px;
+                        margin-bottom: 10px;
+                        border-radius: 10px;
+                        box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+                    }
+                    .article-content {
+                        flex: 1;
+                        color: #000;     
+                    }
+                    .sentiment-circle {
+                        width: 15px;
+                        height: 15px;
+                        border-radius: 50%;
+                        margin-left: 10px;
+                    }
+                </style>""",unsafe_allow_html=True)      
+                sentiment_colors = {
+                    "Positive": "#28a745",
+                    "Neutral": "#ffbf00",
+                    "Negative": "#dc3545"
                 }
-                .coverage-box {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    background-color: #f9f9f9;
-                    padding: 15px;
-                    margin-bottom: 10px;
-                    border-radius: 10px;
-                    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-                }
-                .coverage-content {
-                    flex: 1;
-                    color: #000;     
-                }
-                </style>      
-            <div class="scroll-container">""", unsafe_allow_html=True)
-            coverage = data["Comparitive Sentiment Score"]["Coverage Differences"][:6]
-            for i in range(len(coverage)):
-                st.markdown(f"""
-                    <div class="coverage-box">
-                        <div class="coverage-content">
-                            <h4><b>Comparison</b></h4>
-                            <p>{coverage[i]["Comparison"]}</p>
-                            <h4><b>Impact</b></h4>
-                            <p>{coverage[i]["Impact"]}</p>
+                st.markdown(f"#### Articles from {company}")
+                st.markdown("""<div class="scroll-container">""", unsafe_allow_html=True)
+                article = data["Articles"]
+                for i in range(len(article)):
+                    sentiment_color = sentiment_colors.get(article[i]["Sentiment"], "gray")
+                    st.markdown(f"""
+                        <div class="article-box">
+                            <div class="article-content">
+                                <h4><b>{article[i]["Title"]}</b></h4>
+                                <p>{article[i]["Summary"]}</p>
+                                <p><i>Topics: {", ".join(article[i]["Topics"])}</i></p>
+                            </div>
+                        <div class="sentiment-circle" style="background-color: {sentiment_color};"></div>
                         </div>
-                    </div>
+                    """, unsafe_allow_html=True)
+                st.markdown("</div>", unsafe_allow_html=True)
+
+                st.markdown("#### Coverage Differences")
+                st.markdown("""
+                    <style>
+                    .scroll-container {
+                        max-height: 40px;
+                        overflow-y: auto;
+                        border: 1px solid #ccc;
+                        padding-right: 10px;
+                        border-radius: 10px;
+                    }
+                    .coverage-box {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        background-color: #f9f9f9;
+                        padding: 15px;
+                        margin-bottom: 10px;
+                        border-radius: 10px;
+                        box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+                    }
+                    .coverage-content {
+                        flex: 1;
+                        color: #000;     
+                    }
+                    </style>      
+                <div class="scroll-container">""", unsafe_allow_html=True)
+                coverage = data["Comparitive Sentiment Score"]["Coverage Differences"][:6]
+                for i in range(len(coverage)):
+                    st.markdown(f"""
+                        <div class="coverage-box">
+                            <div class="coverage-content">
+                                <h4><b>Comparison</b></h4>
+                                <p>{coverage[i]["Comparison"]}</p>
+                                <h4><b>Impact</b></h4>
+                                <p>{coverage[i]["Impact"]}</p>
+                            </div>
+                        </div>
+                    """, unsafe_allow_html=True)
+
+                st.markdown("</div>", unsafe_allow_html=True)
+
+                st.markdown("#### Verdict")
+                st.markdown("""
+                    <style>
+                        .verdict-box {
+                        background-color: #f0f0f0;
+                        padding: 15px;
+                        color:#000;
+                        border-radius: 10px;
+                        margin-top: 10px;
+                        box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+                        }
+                    </style>
                 """, unsafe_allow_html=True)
 
-            st.markdown("</div>", unsafe_allow_html=True)
 
-            st.markdown("#### Verdict")
-            st.markdown("""
-                <style>
-                    .verdict-box {
-                    background-color: #f0f0f0;
-                    padding: 15px;
-                    color:#000;
-                    border-radius: 10px;
-                    margin-top: 10px;
-                    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-                    }
-                </style>
-            """, unsafe_allow_html=True)
+                final_sentiment = data['Final Sentiment Analysis']
+                st.markdown(f'<div class="verdict-box"><p>{final_sentiment}</p></div>', unsafe_allow_html=True)
 
 
-            final_sentiment = data['Final Sentiment Analysis']
-            st.markdown(f'<div class="verdict-box"><p>{final_sentiment}</p></div>', unsafe_allow_html=True)
-
-            # Audio Player
-            audio_url = "output.mp3"  # Replace with actual audio URL
+                audio_url = "output.mp3"  # Replace with actual audio URL
             
-            st.markdown("#### Play it in Hindi")
-            st.audio(audio_url, format="audio/mp3")
+                st.markdown("#### Play it in Hindi")
+                st.audio(audio_url, format="audio/mp3")
         
         
     if st.button("Clear API Key"):

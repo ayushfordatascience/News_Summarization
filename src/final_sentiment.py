@@ -14,7 +14,7 @@ class FinalSentiment:
         try:
             return ChatOpenAI(
                 model=openai_model,  
-                openai_api_key=api_key,
+                openai_api_key=self.api_key,
                 temperature=0.7
             )
         except Exception as e:

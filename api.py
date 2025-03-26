@@ -1,20 +1,53 @@
-from fastapi import FastAPI, Query
-import json
+from fastapi import FastAPI
+from pydantic import BaseModel
+from typing import List, Dict
 
-application = FastAPI()
+app = FastAPI()
 
-@application.post("/receive_data")
-async def receive_data(data):
+# Define Pydantic models
+class ArticleModel(BaseModel):
+    Title: str
+    Summary: str
+    Sentiment: str
+    Topics: List[str]
+
+class CoverageDifferenceModel(BaseModel):
+    Comparison: str
+    Impact: str
+
+class SentimentDistributionModel(BaseModel):
+    Positive: int
+    Neutral: int
+
+class TopicOverlapModel(BaseModel):
+    Common_Topics: List[str]
+    Unique_Topics_in_Article_1: List[str]
+    Unique_Topics_in_Article_2: List[str]
+
+class ComparativeSentimentScoreModel(BaseModel):
+    Sentiment_Distribution: SentimentDistributionModel
+    Coverage_Differences: List[CoverageDifferenceModel]
+    Topic_Overlap: TopicOverlapModel
+
+class DataModel(BaseModel):
+    Company: str
+    Articles: List[ArticleModel]
+    Comparative_Sentiment_Score: ComparativeSentimentScoreModel
+    Final_Sentiment_Analysis: str
+    Audio: str
+
+# In-memory storage for received data
+stored_data: List[DataModel] = []
+
+@app.post("/receive_data")
+async def receive_data(data: DataModel):
+    stored_data.append(data)
     return {"message": "Data received successfully!", "received_data": data.dict()}
 
-
-@application.get("/")
+@app.get("/")
 def read_root():
     return {"message": "Welcome to the API"}
 
-@application.get("/data")
-def get_data(key: str = Query(None, description="Filter by a key")):
-    """Returns the filtered JSON data if key is provided"""
-    if key:
-        return {key: data.get(key, "Key not found")}
-    return data
+@app.get("/data")
+def get_data():
+    return {"stored_data": [item.dict() for item in stored_data]}
