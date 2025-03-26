@@ -1,4 +1,4 @@
-from langchain.prompts import PromptTemplate # Import LLMChain correctly
+from langchain.prompts import PromptTemplate 
 from langchain_openai import ChatOpenAI
 from constants import openai_model
 from itertools import combinations
