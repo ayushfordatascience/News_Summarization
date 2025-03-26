@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List, Dict
+import json
 
 application = FastAPI()
 
@@ -40,7 +41,7 @@ stored_data: List[DataModel] = []
 
 def save_data():
     with open("data.json", "w") as file:
-        json.dump([item.dict() for item in stored_data], file, indent=4)
+        json.dump([item.model_dump() for item in stored_data], file, indent=4)
     print("Data saved successfully!")
 
 @application.post("/receive_data")

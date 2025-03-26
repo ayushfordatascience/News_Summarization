@@ -109,9 +109,9 @@ else:
                     st.error(f"Error: {response.status_code} - {response.text}")
                     st.session_state['news_data'] = {}
 
-                data = st.session_state['news_data']['stored_data'][0]
+                data = st.session_state['news_data']['stored_data']
 
-                sentiment_distribution = data['Comparative_Sentiment_Score']['Sentiment Distribution']
+                sentiment_distribution = data['Comparative_Sentiment_Score']['Sentiment_Distribution']
                 positive_count = sentiment_distribution.get("Positive", 0)
                 neutral_count = sentiment_distribution.get("Neutral", 0)
                 negative_count = sentiment_distribution.get("Negative", 0)
