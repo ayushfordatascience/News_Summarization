@@ -20,7 +20,7 @@ class SentimentDistributionModel(BaseModel):
     Positive: int
     Neutral: int
     Negative: int
-class TopicOverlap(BaseModel):
+class TopicOverlapModel(BaseModel):
     Common_Topics: List[str]
     Unique_Topics: Dict[str, List[str]]  # Dynamic keys: "Unique Topics in Article X"
     
