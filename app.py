@@ -64,17 +64,17 @@ else:
                 coverage_list.append({'Comparison': coverages[i]['Comparison'].content,
                 'Impact':coverages[i]['Impact'].content
                 })
-            final_dict["Comparative Sentiment Score"] = {
-                "Sentiment Distribution":sentiment_distribution,
-                "Coverage Differences":coverage_list,
-                "Topic Overlap":{
-                "Common Topics":common_topics,
+            final_dict["Comparative_Sentiment_Score"] = {
+                "Sentiment_Distribution":sentiment_distribution,
+                "Coverage_Differences":coverage_list,
+                "Topic_Overlap":{
+                "Common_Topics":common_topics,
                  }
             }
 
             for t in range(len(topics_list)):
                 c=t
-                final_dict["Comparative Sentiment Score"]['Topic Overlap'][f'Unique Topic in Article {c+1}'] = topics_list[t]
+                final_dict["Comparative_Sentiment_Score"]['Topic_Overlap'][f'Unique_Topics_in_Article {c+1}'] = topics_list[t]
 
 
             final_sentiment = FinalSentiment(api_key)
@@ -83,7 +83,7 @@ else:
             audio = GenerateAudio()
             audio.text_to_speech(verdict.content) 
 
-            final_dict['Final Sentiment Analysis'] = verdict.content
+            final_dict['Final_Sentiment_Analysis'] = verdict.content
             final_dict['Audio']=str(audio)
          
             if st.button("Send Data to API"):
@@ -111,7 +111,7 @@ else:
 
                 data = st.session_state['news_data']['stored_data']
 
-                sentiment_distribution = data['Comparative Sentiment Score']['Sentiment Distribution']
+                sentiment_distribution = data['Comparative_Sentiment_Score']['Sentiment_Distribution']
                 positive_count = sentiment_distribution.get("Positive", 0)
                 neutral_count = sentiment_distribution.get("Neutral", 0)
                 negative_count = sentiment_distribution.get("Negative", 0)
@@ -169,7 +169,7 @@ else:
                     """, unsafe_allow_html=True)
                 st.markdown("</div>", unsafe_allow_html=True)
 
-                st.markdown("#### Coverage_Differences")
+                st.markdown("#### Coverage Differences")
                 st.markdown("""
                     <style>
                     .scroll-container {
@@ -195,7 +195,7 @@ else:
                     }
                     </style>      
                 <div class="scroll-container">""", unsafe_allow_html=True)
-                coverage = data["Comparative Sentiment Score"]["Coverage Differences"][:6]
+                coverage = data["Comparative_Sentiment_Score"]["Coverage_Differences"][:6]
                 for i in range(len(coverage)):
                     st.markdown(f"""
                         <div class="coverage-box">
@@ -225,7 +225,7 @@ else:
                 """, unsafe_allow_html=True)
 
 
-                final_sentiment = data['Final Sentiment Analysis']
+                final_sentiment = data['Final_Sentiment_Analysis']
                 st.markdown(f'<div class="verdict-box"><p>{final_sentiment}</p></div>', unsafe_allow_html=True)
 
 

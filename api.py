@@ -7,36 +7,36 @@ application = FastAPI()
 
 stored_data=[]
 class ArticleModel(BaseModel):
-    "Title": str
-    "Summary": str
-    "Sentiment": str
-    "Topics": List[str]
+    Title: str
+    Summary: str
+    Sentiment: str
+    Topics: List[str]
 
 class CoverageDifferenceModel(BaseModel):
-    "Comparison": str
-    "Impact": str
+    Comparison: str
+    Impact: str
 
 class SentimentDistributionModel(BaseModel):
-    "Positive": int
-    "Neutral": int
-    "Negative": int
+    Positive: int
+    Neutral: int
+    Negative: int
 class TopicOverlapModel(BaseModel):
-    "Common Topics": List[str]
-    "Unique Topics": Dict[str, List[str]] = Field(default_factory=dict) 
+    Common_Topics: List[str]
+    Unique_Topics: Dict[str, List[str]] = Field(default_factory=dict) 
      # Dynamic keys: "Unique Topics in Article X"
     model_config = {"extra": "allow"}
 
 class ComparativeSentimentScoreModel(BaseModel):
-    "Sentiment Distribution": SentimentDistributionModel
-    "Coverage Differences": List[CoverageDifferenceModel]
-    "Topic Overlap": TopicOverlapModel
+    Sentiment_Distribution: SentimentDistributionModel
+    Coverage_Differences: List[CoverageDifferenceModel]
+    Topic_Overlap: TopicOverlapModel
 
 class DataModel(BaseModel):
-    "Company": str
-    "Articles": List[ArticleModel]
-    "Comparative Sentiment Score": ComparativeSentimentScoreModel
-    "Final Sentiment Analysis": str
-    "Audio": str
+    Company: str
+    Articles: List[ArticleModel]
+    Comparative_Sentiment_Score: ComparativeSentimentScoreModel
+    Final_Sentiment_Analysis: str
+    Audio: str
 
 stored_data: List[DataModel] = []
 
