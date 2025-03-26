@@ -109,13 +109,12 @@ else:
                     st.error(f"Error: {response.status_code} - {response.text}")
                     st.session_state['news_data'] = {}
 
-                data = st.session_state['news_data']
-                print(data)
+                data = st.session_state['news_data']['stored_data'][0]
 
-                sentiment_distribution = data['Comparitive Sentiment Score']['Sentiment Distribution']
-                positive_count = sentiment_distribution.get("positive", 0)
-                neutral_count = sentiment_distribution.get("neutral", 0)
-                negative_count = sentiment_distribution.get("negative", 0)
+                sentiment_distribution = data['Comparative_Sentiment_Score']['Sentiment Distribution']
+                positive_count = sentiment_distribution.get("Positive", 0)
+                neutral_count = sentiment_distribution.get("Neutral", 0)
+                negative_count = sentiment_distribution.get("Negative", 0)
 
                 st.markdown(f"**Sentiment Distribution:** Positive: {positive_count} | Neutral: {neutral_count} | Negative: {negative_count}")
                 st.markdown("""
@@ -170,7 +169,7 @@ else:
                     """, unsafe_allow_html=True)
                 st.markdown("</div>", unsafe_allow_html=True)
 
-                st.markdown("#### Coverage Differences")
+                st.markdown("#### Coverage_Differences")
                 st.markdown("""
                     <style>
                     .scroll-container {
@@ -196,7 +195,7 @@ else:
                     }
                     </style>      
                 <div class="scroll-container">""", unsafe_allow_html=True)
-                coverage = data["Comparitive Sentiment Score"]["Coverage Differences"][:6]
+                coverage = data["Comparative_Sentiment_Score"]["Coverage_Differences"][:6]
                 for i in range(len(coverage)):
                     st.markdown(f"""
                         <div class="coverage-box">
@@ -226,7 +225,7 @@ else:
                 """, unsafe_allow_html=True)
 
 
-                final_sentiment = data['Final Sentiment Analysis']
+                final_sentiment = data['Final_Sentiment_Analysis']
                 st.markdown(f'<div class="verdict-box"><p>{final_sentiment}</p></div>', unsafe_allow_html=True)
 
 
