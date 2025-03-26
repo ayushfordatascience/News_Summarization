@@ -64,7 +64,7 @@ else:
                 coverage_list.append({'Comparison': coverages[i]['Comparison'].content,
                 'Impact':coverages[i]['Impact'].content
                 })
-            final_dict["Comparitive Sentiment Score"] = {
+            final_dict["Comparative Sentiment Score"] = {
                 "Sentiment Distribution":sentiment_distribution,
                 "Coverage Differences":coverage_list,
                 "Topic Overlap":{
