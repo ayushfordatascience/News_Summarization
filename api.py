@@ -22,13 +22,9 @@ class SentimentDistributionModel(BaseModel):
     Negative: int
 class TopicOverlapModel(BaseModel):
     Common_Topics: List[str]
-    Unique_Topics: Dict[str, List[str]]  # Dynamic keys: "Unique Topics in Article X"
-    
-    def serialize(self):
-        return {
-            "Common Topics": self.Common_Topics,
-            **{f"Unique Topics in Article {i+1}": topics for i, (key, topics) in enumerate(self.Unique_Topics.items())}
-        }
+    Unique_Topics: Dict[str, List[str]] 
+     # Dynamic keys: "Unique Topics in Article X"
+    model_config = {"extra": "allow"}
 
 class ComparativeSentimentScoreModel(BaseModel):
     Sentiment_Distribution: SentimentDistributionModel
